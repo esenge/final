@@ -22,12 +22,12 @@ angular.module('mybookService', [])
 
 	// update a book
 	mybookFactory.update = function(id, mybookData) {
-		return $http.put('/api/mybook/' + id, mybookData);
+		return $http.put('/api/mybooks/' + id, mybookData);
 	};
 
 	// delete a book
 	mybookFactory.delete = function(id) {
-		return $http.delete('/api/mybook/' + id);
+		return $http.delete('/api/mybooks/' + id);
 	};
 
 	// return our entire mybookFactory object
