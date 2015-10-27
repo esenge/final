@@ -36,8 +36,33 @@ angular.module('app.routes', ['ngRoute'])
 		templateUrl: 'app/views/pages/users/single.html',
 		controller: 'userEditController',
 		controllerAs: 'user'
-	});
+	})
+	
+	/*=============BOOOKS=====================================*/
+	
+	// show my books
+		.when('/mybooks', {
+		templateUrl: 'app/views/pages/mybooks/all.html',
+		controller: 'mybookController',
+		controllerAs: 'mybook'
+	})
 
+	// form to create a new book
+	// same view as edit page
+		.when('/mybooks/create', {
+		templateUrl: 'app/views/pages/mybooks/single.html',
+		controller: 'mybookCreateController',
+		controllerAs: 'mybook'
+	})
+
+	// page to edit a book
+		.when('/mybooks/:mybook_id', {
+		templateUrl: 'app/views/pages/mybooks/single.html',
+		controller: 'mybookEditController',
+		controllerAs: 'mybook'
+	});
+	
+	
 	$locationProvider.html5Mode(true);
 
 });
