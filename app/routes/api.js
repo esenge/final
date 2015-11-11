@@ -11,32 +11,32 @@ module.exports = function(app, express) {
 
 	var apiRouter = express.Router();
 
-	// route to generate sample user
-	//	apiRouter.post('/sample', function(req, res) {
-	//
-	//		// look for the user named chris
-	//		User.findOne({ 'username': 'chris' }, function(err, user) {
-	//
-	//			// if there is no chris user, create one
-	//			if (!user) {
-	//				var sampleUser = new User();
-	//
-	//				sampleUser.name = 'Chris';  
-	//				sampleUser.username = 'chris'; 
-	//				sampleUser.password = 'supersecret';
-	//
-	//				sampleUser.save();
-	//			} else {
-	//				console.log(user);
-	//
-	//				// if there is a chris, update his password
-	//				user.password = 'supersecret';
-	//				user.save();
-	//			}
-	//
-	//		});
-	//
-	//	});
+	//route to generate sample user
+	apiRouter.route('/users')
+		.post(function(req, res) {
+		var objektaID;
+		var user = new User();		// create a new instance of the User model
+		user.name = req.body.name;  // set the users name (comes from the request)
+		user.username = req.body.username;  // set the users username (comes from the request)
+		user.password = req.body.password;  // set the users password (comes from the request)
+
+		user.save(function(err, username) {
+
+			objektaID = username.id;
+			//user.save(function(err) {
+			if (err) {
+				// duplicate entry
+				if (err.code == 11000) 
+					return res.json({ success: false, message: 'A user with that username already exists. '});
+				else 
+					return res.send(err);
+			}
+
+			// return a message
+			res.json({ message: 'User created!' });
+		});
+
+	})
 
 	// route to authenticate a user (POST http://localhost:8080/api/authenticate)
 	apiRouter.post('/authenticate', function(req, res) {
@@ -68,17 +68,19 @@ module.exports = function(app, express) {
 					// if user is found and password is right
 					// create a token
 					var token = jwt.sign({
+						id: user._id, //saglabā esošo user id
 						name: user.name,
 						username: user.username
 					}, superSecret, {
-						expiresInMinutes: 1 // expires in 24 hours
+						expiresInMinutes: 1400 // expires in 24 hours
 					});
 
 					// return the information including token as JSON
 					res.json({
 						success: true,
 						message: 'Enjoy your token!',
-						token: token
+						token: token,
+						id: user._id
 					});
 				}   
 
@@ -137,27 +139,30 @@ module.exports = function(app, express) {
 	apiRouter.route('/users')
 
 	// create a user (accessed at POST http://localhost:8080/users)
-		.post(function(req, res) {
-
-		var user = new User();		// create a new instance of the User model
-		user.name = req.body.name;  // set the users name (comes from the request)
-		user.username = req.body.username;  // set the users username (comes from the request)
-		user.password = req.body.password;  // set the users password (comes from the request)
-
-		user.save(function(err) {
-			if (err) {
-				// duplicate entry
-				if (err.code == 11000) 
-					return res.json({ success: false, message: 'A user with that username already exists. '});
-				else 
-					return res.send(err);
-			}
-
-			// return a message
-			res.json({ message: 'User created!' });
-		});
-
-	})
+	//		.post(function(req, res) {
+	//		var objektaID;
+	//		var user = new User();		// create a new instance of the User model
+	//		user.name = req.body.name;  // set the users name (comes from the request)
+	//		user.username = req.body.username;  // set the users username (comes from the request)
+	//		user.password = req.body.password;  // set the users password (comes from the request)
+	//
+	//		user.save(function(err, username) {
+	//			
+	//			objektaID = username.id;
+	//			//user.save(function(err) {
+	//			if (err) {
+	//				// duplicate entry
+	//				if (err.code == 11000) 
+	//					return res.json({ success: false, message: 'A user with that username already exists. '});
+	//				else 
+	//					return res.send(err);
+	//			}
+	//
+	//			// return a message
+	//			res.json({ message: 'User created!' });
+	//		});
+	//
+	//	})
 
 	// get all the users (accessed at GET http://localhost:8080/api/users)
 		.get(function(req, res) {
@@ -235,7 +240,8 @@ module.exports = function(app, express) {
 		//user.name = req.body.name;  // set the users name (comes from the request)
 		mybook.title = req.body.title;  // set the users username (comes from the request)
 		mybook.author = req.body.author;  // set the users password (comes from the request)
-
+		mybook.userId = req.body.userId;
+		//console.log(mybook.userId);
 		mybook.save(function(err) {
 			if (err) {
 				// duplicate entry

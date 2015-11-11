@@ -1,13 +1,19 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 var bcrypt 		 = require('bcrypt-nodejs');
 
 // user schema 
 var UserSchema   = new Schema({
+	//userId: ObjectId,
 	name: String,
 	username: { type: String, required: true, index: { unique: true }},
 	password: { type: String, required: true, select: false }
 });
+
+//UserSchema.virtual('userId').get(function(){
+//	return this._id;
+//});
 
 // hash the password before the user is saved
 UserSchema.pre('save', function(next) {

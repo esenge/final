@@ -87,12 +87,12 @@ angular.module('mybookCtrl', ['mybookService'])
 		vm.message = '';
 
 		// call the mybookService function to update 
-		Mybook.update($routeParams.mybook_id_id, vm.mybookDataData)
+		Mybook.update($routeParams.mybook_id, vm.mybookData)
 			.success(function(data) {
 				vm.processing = false;
 
 				// clear the form
-				vm.mybookDataData = {};
+				vm.mybookData = {};
 
 				// bind the message from our API to vm.message
 				vm.message = data.message;
