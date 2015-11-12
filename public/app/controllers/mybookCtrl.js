@@ -58,6 +58,7 @@ angular.module('mybookCtrl', ['mybookService'])
 			.success(function(data) {
 				vm.processing = false;
 				vm.mybookData = {};
+				//vm.mybookData.userId = '562eaa5b713d03900e31c2f6';
 				vm.message = data.message;
 			});
 			
