@@ -10,7 +10,17 @@ var superSecret = config.secret;
 module.exports = function(app, express) {
 
 	var apiRouter = express.Router();
+apiRouter.route('/books/:book_title')
 
+	// get the book with that id
+		.get(function(req, res) {
+		Book.findOne(req.params.book_title, function(err, book) {
+			if (err) res.send(err);
+
+			// return that book
+			res.json(book);
+		});
+	})
 	//route to generate sample user
 	apiRouter.route('/users')
 		.post(function(req, res) {
