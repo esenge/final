@@ -60,7 +60,16 @@ angular.module('app.routes', ['ngRoute'])
 		templateUrl: 'app/views/pages/books/single.html',
 		controller: 'bookEditController',
 		controllerAs: 'book'
+	})
+	
+	// == MY BOOKS ==//
+	.when('/mybooks', {
+		templateUrl: 'app/views/pages/mybooks/all.html',
+		controller: 'myBookController',
+		controllerAs: 'book'
 	});
+	
+	
 	
 	
 	$locationProvider.html5Mode(true);

@@ -14,6 +14,11 @@ angular.module('bookService', [])
 	bookFactory.all = function() {
 		return $http.get('/api/books/');
 	};
+	
+	// get all my books
+	bookFactory.allMy = function(id) {
+		return $http.get('/api/mybooks/'+id);
+	};
 
 	// create a book
 	bookFactory.create = function(bookData) {

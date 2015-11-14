@@ -377,6 +377,23 @@ module.exports = function(app, express) {
 			res.json({ message: 'Successfully deleted' });
 		});
 	});
+	
+	
+	// on routes that end in /books/:user_id
+	// ----------------------------------------------------
+	apiRouter.route('/mybooks/:user_id')
+
+	// get all the users (accessed at GET http://localhost:8080/api/users)
+		.get(function(req, res) {
+
+		Book.find({"user" : req.params.user_id}, function(err, books) {
+			if (err) res.send(err);
+
+			// return the users
+			res.json(books);
+		});
+		
+	});
 
 	// api endpoint to get user information
 	apiRouter.get('/me', function(req, res) {

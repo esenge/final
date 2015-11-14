@@ -39,6 +39,28 @@ angular.module('bookCtrl', ['bookService'])
 
 })
 
+.controller('myBookController', function(Book, Auth) {
+
+	var vm = this;
+
+	// set a processing variable to show loading things
+	vm.processing = true;
+
+	Auth.getUser()
+		.then(function(data) {
+
+			Book.allMy(data.data.id)
+				.success(function(data) {
+
+					// when all the books come back, remove the processing variable
+					vm.processing = false;
+
+					// bind the books that come back to vm.books
+					vm.books = data;
+				});
+		});
+})
+
 // controller applied to book creation page
 .controller('bookCreateController', function(Book, Auth) {
 
@@ -105,3 +127,5 @@ angular.module('bookCtrl', ['bookService'])
 	};
 
 });
+
+
