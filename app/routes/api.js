@@ -1,8 +1,8 @@
 var bodyParser = require('body-parser'); 	// get body-parser
 var User       = require('../models/user');
 var Book       = require('../models/book');
-var Comment       = require('../models/comment');
 var Author      = require('../models/author');
+var Comment       = require('../models/comment');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
 
@@ -12,7 +12,7 @@ var superSecret = config.secret;
 module.exports = function(app, express) {
 
 	var apiRouter = express.Router();
-	
+
 	// apiRouter.route('/books/:book_title')
 
 	// // get the book with that id
@@ -24,7 +24,6 @@ module.exports = function(app, express) {
 	// 		res.json(book);
 	// 	});
 	// })
-
 
 	//route to generate sample user
 	apiRouter.route('/users')
@@ -271,19 +270,12 @@ module.exports = function(app, express) {
 				return res.send(err);
 		}
 
-
-		var book = new Book();		// create a new instance of the User model
-		//user.name = req.body.name;  // set the users name (comes from the request)
-		book.title = req.body.title;  // set the users username (comes from the request)
-		book.author = req.body.author;  // set the users password (comes from the request)
-		book.user = req.body.user_id;
-
-		book.save(function(err) {
 		var author = new Author();
 		author.name = req.body.author;
 		author.book = books._id;
 
 		author.save(function(err) {
+
 			if (err) {
 				// duplicate entry
 				if (err.code == 11000)
@@ -421,11 +413,11 @@ console.log(author);
 	//get all the users (accessed at GET http://localhost:8080/api/users)
 	.get(function(req, res) {
 
-				Book.find({
-					"user": req.params.user_id
-				}, function(err, books) {
-					if (err) res.send(err);
-
+		Book.find({
+			"user": req.params.user_id
+		}, function(err, books) {
+			if (err) res.send(err);
+			
 			// return the users
 			res.json(books);
 		});
@@ -434,17 +426,14 @@ console.log(author);
 
 	apiRouter.route('/books/bookinfo/:book_id')
 
-		.get(function(req, res) {
+	.get(function(req, res) {
 
-		Book.findById(req.params.book_id, function(err, books) {
-			if (err) res.send(err);
+				Book.findById(req.params.book_id, function(err, books) {
+					if (err) res.send(err);
 
-			res.json(books);
-		});
-
-					// return the users
 					res.json(books);
 				});
+	
 	});
 
 	// api endpoint to get user information
