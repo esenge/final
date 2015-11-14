@@ -67,10 +67,14 @@ angular.module('app.routes', ['ngRoute'])
 		templateUrl: 'app/views/pages/mybooks/all.html',
 		controller: 'myBookController',
 		controllerAs: 'book'
+	})
+	
+	.when('/books/bookinfo/:book_id', {
+		templateUrl: 'app/views/pages/books/onebook.html',
+		controller: 'bookSingleController',
+		controllerAs: 'book'
+
 	});
-	
-	
-	
 	
 	$locationProvider.html5Mode(true);
 

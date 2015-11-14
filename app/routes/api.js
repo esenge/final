@@ -1,6 +1,7 @@
 var bodyParser = require('body-parser'); 	// get body-parser
 var User       = require('../models/user');
 var Book       = require('../models/book');
+var Comment       = require('../models/comment');
 var Author      = require('../models/author');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
@@ -23,6 +24,7 @@ module.exports = function(app, express) {
 	// 		res.json(book);
 	// 	});
 	// })
+
 
 	//route to generate sample user
 	apiRouter.route('/users')
@@ -87,7 +89,7 @@ module.exports = function(app, express) {
 					}, superSecret, {
 						expiresInMinutes: 1400 // expires in 24 hours
 					});
-					
+
 					var lietotajs = user._id;
 					console.log(lietotajs);
 
@@ -104,66 +106,6 @@ module.exports = function(app, express) {
 
 		});
 	});
-	
-	
-	
-	
-//	apiRouter.post('/authenticate', function(req, res) {
-//
-//		// find the user
-//		User.findOne({
-//			username: req.body.username
-//		}).select('name username password').exec(function(err, user) {
-//
-//			if (err) throw err;
-//
-//			// no user with that username was found
-//			if (!user) {
-//				res.json({ 
-//					success: false, 
-//					message: 'Authentication failed. User not found.' 
-//				});
-//			} else if (user) {
-//
-//				// check if password matches
-//				var validPassword = user.comparePassword(req.body.password);
-//				if (!validPassword) {
-//					res.json({ 
-//						success: false, 
-//						message: 'Authentication failed. Wrong password.' 
-//					});
-//				} else {
-//
-//					// if user is found and password is right
-//					// create a token
-//					var token = jwt.sign({
-//						id: user._id, //saglabā esošo user id
-//						name: user.name,
-//						username: user.username
-//					}, superSecret, {
-//						expiresInMinutes: 1400 // expires in 24 hours
-//					});
-//
-//					// return the information including token as JSON
-//					res.json({
-//						success: true,
-//						message: 'Enjoy your token!',
-//						token: token,
-//						id: user._id
-//					});
-//				}   
-//
-//			}
-//
-//		});
-//	});
-	
-	
-	
-	
-	
-	
-	
 
 	// route middleware to verify a token
 	apiRouter.use(function(req, res, next) {
@@ -330,6 +272,13 @@ module.exports = function(app, express) {
 		}
 
 
+		var book = new Book();		// create a new instance of the User model
+		//user.name = req.body.name;  // set the users name (comes from the request)
+		book.title = req.body.title;  // set the users username (comes from the request)
+		book.author = req.body.author;  // set the users password (comes from the request)
+		book.user = req.body.user_id;
+
+		book.save(function(err) {
 		var author = new Author();
 		author.name = req.body.author;
 		author.book = books._id;
@@ -476,6 +425,22 @@ console.log(author);
 					"user": req.params.user_id
 				}, function(err, books) {
 					if (err) res.send(err);
+
+			// return the users
+			res.json(books);
+		});
+
+	});
+
+	apiRouter.route('/books/bookinfo/:book_id')
+
+		.get(function(req, res) {
+
+		Book.findById(req.params.book_id, function(err, books) {
+			if (err) res.send(err);
+
+			res.json(books);
+		});
 
 					// return the users
 					res.json(books);

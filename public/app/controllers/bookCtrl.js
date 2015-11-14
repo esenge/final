@@ -103,6 +103,7 @@ angular.module('bookCtrl', ['bookService'])
 
 	// get the book data for the book you want to edit
 	// $routeParams is the way we grab data from the URL
+	
 	Book.get($routeParams.book_id)
 		.success(function(data) {
 			vm.bookData = data;
@@ -129,3 +130,18 @@ angular.module('bookCtrl', ['bookService'])
 	};
 
 })
+
+.controller('bookSingleController', function($routeParams, Book) {
+
+	var vm = this;
+
+	vm.type = 'getSingleBook';
+	console.log($routeParams.book_id);
+	Book.getSingleBook($routeParams.book_id)
+		.success(function(data) {
+			vm.bookData = data;
+			console.log(data);
+		});
+
+});
+

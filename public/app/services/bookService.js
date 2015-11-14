@@ -9,6 +9,12 @@ angular.module('bookService', [])
 	bookFactory.get = function(id) {
 		return $http.get('/api/books/' + id);
 	};
+	
+	// get book single page
+	bookFactory.getSingleBook = function(id) {
+		return $http.get('/api/books/bookinfo/'+id);
+	};
+
 
 	// get all books
 	bookFactory.all = function() {
