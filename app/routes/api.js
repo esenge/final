@@ -1,6 +1,7 @@
 var bodyParser = require('body-parser'); 	// get body-parser
 var User       = require('../models/user');
 var Book       = require('../models/book');
+var Author      = require('../models/author');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
 
@@ -10,17 +11,19 @@ var superSecret = config.secret;
 module.exports = function(app, express) {
 
 	var apiRouter = express.Router();
-apiRouter.route('/books/:book_title')
+	
+	// apiRouter.route('/books/:book_title')
 
-	// get the book with that id
-		.get(function(req, res) {
-		Book.findOne(req.params.book_title, function(err, book) {
-			if (err) res.send(err);
+	// // get the book with that id
+	// 	.get(function(req, res) {
+	// 	Book.findOne(req.params.book_title, function(err, book) {
+	// 		if (err) res.send(err);
 
-			// return that book
-			res.json(book);
-		});
-	})
+	// 		// return that book
+	// 		res.json(book);
+	// 	});
+	// })
+
 	//route to generate sample user
 	apiRouter.route('/users')
 		.post(function(req, res) {
@@ -302,33 +305,60 @@ apiRouter.route('/books/:book_title')
 	/*----------------------------------*/
 	/*----------------------------------*/
 
-	// on routes that end in /users
+	// on routes that end in /books
 	// ----------------------------------------------------
 	apiRouter.route('/books')
+// create a user (accessed at POST http://localhost:8080/users)
+.post(function(req, res) {
 
-	// create a user (accessed at POST http://localhost:8080/users)
-		.post(function(req, res) {
+	var book = new Book(); // create a new instance of the User model
+	//user.name = req.body.name;  // set the users name (comes from the request)
+	book.title = req.body.title; // set the users username (comes from the request)
+	book.author = req.body.author; // set the users password (comes from the request)
+	book.user = req.body.user_id;
 
-		var book = new Book();		// create a new instance of the User model
-		//user.name = req.body.name;  // set the users name (comes from the request)
-		book.title = req.body.title;  // set the users username (comes from the request)
-		book.author = req.body.author;  // set the users password (comes from the request)
-		book.user = req.body.user_id;
-		
-		book.save(function(err) {
+	book.save(function(err, books) {
+		if (err) {
+			// duplicate entry
+			if (err.code == 11000)
+				return res.json({
+					success: false,
+					message: 'A book with that username already exists. '
+				});
+			else
+				return res.send(err);
+		}
+
+
+		var author = new Author();
+		author.name = req.body.author;
+		author.book = books._id;
+
+		author.save(function(err) {
 			if (err) {
 				// duplicate entry
-				if (err.code == 11000) 
-					return res.json({ success: false, message: 'A book with that username already exists. '});
-				else 
+				if (err.code == 11000)
+					return res.json({
+						success: false,
+						message: 'An author with that username already exists. '
+					});
+				else
 					return res.send(err);
 			}
-
-			// return a message
-			res.json({ message: 'book created!' });
+			res.json({
+				message: 'author created!'
+			});
 		});
 
-	})
+
+		// return a message
+		res.json({
+			message: 'book created!'
+		});
+	});
+
+
+})
 
 	// get all the users (accessed at GET http://localhost:8080/api/users)
 		.get(function(req, res) {
@@ -345,64 +375,111 @@ apiRouter.route('/books/:book_title')
 	// ----------------------------------------------------
 	apiRouter.route('/books/:book_id')
 
-	// get the book with that id
-		.get(function(req, res) {
-		Book.findById(req.params.book_id, function(err, book) {
-			if (err) res.send(err);
+	//get the book with that id
+	.get(function(req, res) {
+			Book.findById(req.params.book_id, function(err, book) {
+				if (err) res.send(err);
+console.log("blablabla2232323");
+				console.log(book);
 
-			// return that book
-			res.json(book);
-		});
-	})
 
-	// update the book with this id
+				// return that book
+				res.json(book);
+			});
+		})
+		// update the book with this id
 		.put(function(req, res) {
-		Book.findById(req.params.book_id, function(err, book) {
+			Book.findById(req.params.book_id, function(err, book) {
 
-			if (err) res.send(err);
-
-			// set the new user information if it exists in the request
-			//if (req.body.name) user.name = req.body.name;
-			if (req.body.title) book.title = req.body.title;
-			if (req.body.author) book.author = req.body.author;
-
-			// save the book
-			book.save(function(err) {
 				if (err) res.send(err);
 
-				// return a message
-				res.json({ message: 'book updated!' });
-			});
+				// set the new user information if it exists in the request
+				//if (req.body.name) user.name = req.body.name;
+				if (req.body.title) book.title = req.body.title;
+				if (req.body.author) book.author = req.body.author;
 
-		});
-	})
+				// save the book
+				book.save(function(err) {
+					if (err) res.send(err);
+console.log(book);
+console.log("blablabla");
+console.log(book.user);
+console.log("blablabla2");
+
+					Author.findById(
+						book.user,
+						function(err, author) {
+
+							if (err) res.send(err);
+							console.log("blablabla3");
+							console.log(book.user);
+console.log("blablabla4");
+console.log(author);
+
+							//	if (req.author.name) 
+							 author.name = book.author;
+
+
+							author.save(function(err) {
+								if (err) {
+									// duplicate entry
+									if (err.code == 11000)
+										return res.json({
+											success: false,
+											message: 'An author with that username already exists. '
+										});
+									else
+										return res.send(err);
+								}
+								res.json({
+									message: 'author created!'
+								});
+							});
+						}
+					);
+
+
+
+
+
+					// return a message
+					res.json({
+						message: 'book updated!'
+					});
+				});
+
+			});
+		})
 
 	// delete the book with this id
-		.delete(function(req, res) {
+	.delete(function(req, res) {
 		Book.remove({
 			_id: req.params.book_id
 		}, function(err, book) {
 			if (err) res.send(err);
 
-			res.json({ message: 'Successfully deleted' });
+			res.json({
+				message: 'Successfully deleted'
+			});
 		});
 	});
-	
-	
+
+
 	// on routes that end in /books/:user_id
 	// ----------------------------------------------------
 	apiRouter.route('/mybooks/:user_id')
 
-	// get all the users (accessed at GET http://localhost:8080/api/users)
-		.get(function(req, res) {
+	//get all the users (accessed at GET http://localhost:8080/api/users)
+	.get(function(req, res) {
 
-		Book.find({"user" : req.params.user_id}, function(err, books) {
-			if (err) res.send(err);
+				Book.find({
+					"user": req.params.user_id
+				}, function(err, books) {
+					if (err) res.send(err);
 
-			// return the users
-			res.json(books);
-		});
-		
+					// return the users
+					res.json(books);
+				});
 	});
 
 	// api endpoint to get user information

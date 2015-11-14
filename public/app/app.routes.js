@@ -67,12 +67,6 @@ angular.module('app.routes', ['ngRoute'])
 		templateUrl: 'app/views/pages/mybooks/all.html',
 		controller: 'myBookController',
 		controllerAs: 'book'
-	})
-	
-	.when('/books/:book_title', {
-		templateUrl: 'app/views/pages/books/onebook.html',
-		controller: 'bookSingleController',
-		controllerAs: 'book'
 	});
 	
 	
