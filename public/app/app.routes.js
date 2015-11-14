@@ -40,26 +40,26 @@ angular.module('app.routes', ['ngRoute'])
 	
 	/*=============BOOOKS=====================================*/
 	
-	// show my books
-		.when('/mybooks', {
-		templateUrl: 'app/views/pages/mybooks/all.html',
-		controller: 'mybookController',
-		controllerAs: 'mybook'
+	// show books
+		.when('/books', {
+		templateUrl: 'app/views/pages/books/all.html',
+		controller: 'bookController',
+		controllerAs: 'book'
 	})
 
 	// form to create a new book
 	// same view as edit page
-		.when('/mybooks/create', {
-		templateUrl: 'app/views/pages/mybooks/single.html',
-		controller: 'mybookCreateController',
-		controllerAs: 'mybook'
+		.when('/books/create', {
+		templateUrl: 'app/views/pages/books/single.html',
+		controller: 'bookCreateController',
+		controllerAs: 'book'
 	})
 
 	// page to edit a book
-		.when('/mybooks/:mybook_id', {
-		templateUrl: 'app/views/pages/mybooks/single.html',
-		controller: 'mybookEditController',
-		controllerAs: 'mybook'
+		.when('/books/:book_id', {
+		templateUrl: 'app/views/pages/books/single.html',
+		controller: 'bookEditController',
+		controllerAs: 'book'
 	});
 	
 	

@@ -1,6 +1,6 @@
 var bodyParser = require('body-parser'); 	// get body-parser
 var User       = require('../models/user');
-var Mybook       = require('../models/mybook');
+var Book       = require('../models/book');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
 
@@ -33,7 +33,7 @@ module.exports = function(app, express) {
 			}
 
 			// return a message
-			res.json({ message: 'User created!' });
+			res.json({ message: 'User creat`ed!' });
 		});
 
 	})
@@ -294,28 +294,28 @@ module.exports = function(app, express) {
 
 	// on routes that end in /users
 	// ----------------------------------------------------
-	apiRouter.route('/mybooks')
+	apiRouter.route('/books')
 
 	// create a user (accessed at POST http://localhost:8080/users)
 		.post(function(req, res) {
 
-		var mybook = new Mybook();		// create a new instance of the User model
+		var book = new Book();		// create a new instance of the User model
 		//user.name = req.body.name;  // set the users name (comes from the request)
-		mybook.title = req.body.title;  // set the users username (comes from the request)
-		mybook.author = req.body.author;  // set the users password (comes from the request)
-		mybook.userId = req.body.userId;
-		//console.log(mybook.userId);
-		mybook.save(function(err) {
+		book.title = req.body.title;  // set the users username (comes from the request)
+		book.author = req.body.author;  // set the users password (comes from the request)
+		book.user = req.body.user_id;
+		
+		book.save(function(err) {
 			if (err) {
 				// duplicate entry
 				if (err.code == 11000) 
-					return res.json({ success: false, message: 'A mybook with that username already exists. '});
+					return res.json({ success: false, message: 'A book with that username already exists. '});
 				else 
 					return res.send(err);
 			}
 
 			// return a message
-			res.json({ message: 'mybook created!' });
+			res.json({ message: 'book created!' });
 		});
 
 	})
@@ -323,55 +323,55 @@ module.exports = function(app, express) {
 	// get all the users (accessed at GET http://localhost:8080/api/users)
 		.get(function(req, res) {
 
-		Mybook.find({}, function(err, mybooks) {
+		Book.find({}, function(err, books) {
 			if (err) res.send(err);
 
 			// return the users
-			res.json(mybooks);
+			res.json(books);
 		});
 	});
 
-	// on routes that end in /mybooks/:mybook_id
+	// on routes that end in /books/:book_id
 	// ----------------------------------------------------
-	apiRouter.route('/mybooks/:mybook_id')
+	apiRouter.route('/books/:book_id')
 
-	// get the mybook with that id
+	// get the book with that id
 		.get(function(req, res) {
-		Mybook.findById(req.params.mybook_id, function(err, mybook) {
+		Book.findById(req.params.book_id, function(err, book) {
 			if (err) res.send(err);
 
-			// return that mybook
-			res.json(mybook);
+			// return that book
+			res.json(book);
 		});
 	})
 
-	// update the mybook with this id
+	// update the book with this id
 		.put(function(req, res) {
-		Mybook.findById(req.params.mybook_id, function(err, mybook) {
+		Book.findById(req.params.book_id, function(err, book) {
 
 			if (err) res.send(err);
 
 			// set the new user information if it exists in the request
 			//if (req.body.name) user.name = req.body.name;
-			if (req.body.title) mybook.title = req.body.title;
-			if (req.body.author) mybook.author = req.body.author;
+			if (req.body.title) book.title = req.body.title;
+			if (req.body.author) book.author = req.body.author;
 
-			// save the mybook
-			mybook.save(function(err) {
+			// save the book
+			book.save(function(err) {
 				if (err) res.send(err);
 
 				// return a message
-				res.json({ message: 'mybook updated!' });
+				res.json({ message: 'book updated!' });
 			});
 
 		});
 	})
 
-	// delete the mybook with this id
+	// delete the book with this id
 		.delete(function(req, res) {
-		Mybook.remove({
-			_id: req.params.mybook_id
-		}, function(err, mybook) {
+		Book.remove({
+			_id: req.params.book_id
+		}, function(err, book) {
 			if (err) res.send(err);
 
 			res.json({ message: 'Successfully deleted' });

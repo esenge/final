@@ -3,10 +3,10 @@ var Schema       = mongoose.Schema;
 var bcrypt 		 = require('bcrypt-nodejs');
 
 // user schema 
-var MybookSchema   = new Schema({
+var BookSchema   = new Schema({
 	title: { type: String, required: true},
 	author: { type: String, required: true },
-	userId: { type: String, required:true }
+	user: {type: Schema.ObjectId, ref: 'UserSchema', required: true },
 });
 
 // hash the password before the user is saved
@@ -33,4 +33,4 @@ var MybookSchema   = new Schema({
 //	return bcrypt.compareSync(password, user.password);
 //};
 
-module.exports = mongoose.model('Mybook', MybookSchema);
+module.exports = mongoose.model('Book', BookSchema);

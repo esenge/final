@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>
-		My books 
-		<a href="/mybooks/create" class="btn btn-default">
+		Books 
+		<a href="/books/create" class="btn btn-default">
 			<span class="glyphicon glyphicon-plus"></span> 
 			New book
 		</a>
@@ -10,12 +10,12 @@
 
 </div>
 
-<div class="jumbotron text-center" ng-show="mybook.processing">
+<div class="jumbotron text-center" ng-show="book.processing">
 	<span class="glyphicon glyphicon-repeat spinner"></span>
 	<p>Loading books...</p>
 </div>
 
-<table class="table table-bordered table-striped" ng-show="mybook.mybooks">
+<table class="table table-bordered table-striped" ng-show="book.books">
 	<thead>
 		<tr>
 			<th>_id</th>
@@ -25,13 +25,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="book in mybook.mybooks">
+		<tr ng-repeat="book in book.books">
 			<td>{{ book._id }}</td>
 			<td>{{ book.title }}</td>
 			<td>{{ book.author }}</td>
 			<td class="col-sm-2">
-				<a ng-href="/mybooks/{{ book._id }}" class="btn btn-danger">Edit</a>
-				<a href="#" ng-click="mybook.deleteMybook(book._id)" class="btn btn-primary">Delete</a>
+				<a ng-href="/books/{{ book._id }}" class="btn btn-danger">Edit</a>
+				<a href="#" ng-click="book.deleteBook(book._id)" class="btn btn-primary">Delete</a>
 			</td>
 		</tr>
 	</tbody>
