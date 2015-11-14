@@ -27,11 +27,7 @@
 	<tbody>
 		<tr ng-repeat="book in book.books">
 			<td>{{ book._id }}</td>
-<<<<<<< HEAD
-			<td>{{ book.title }}</td>
-=======
 			<td><a ng-href="/books/bookinfo/{{ book._id }}">{{ book.title }}</a></td>
->>>>>>> 11cc546d84b4609471cdb7fa6185932d8f7ba21d
 			<td>{{ book.author }}</td>
 			<td class="col-sm-2">
 				<a ng-href="/books/{{ book._id }}" class="btn btn-danger">Edit</a>
