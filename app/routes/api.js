@@ -1,6 +1,7 @@
 var bodyParser = require('body-parser'); 	// get body-parser
 var User       = require('../models/user');
 var Book       = require('../models/book');
+var Comment       = require('../models/comment');
 var jwt        = require('jsonwebtoken');
 var config     = require('../../config');
 
@@ -10,17 +11,7 @@ var superSecret = config.secret;
 module.exports = function(app, express) {
 
 	var apiRouter = express.Router();
-apiRouter.route('/books/:book_title')
 
-	// get the book with that id
-		.get(function(req, res) {
-		Book.findOne(req.params.book_title, function(err, book) {
-			if (err) res.send(err);
-
-			// return that book
-			res.json(book);
-		});
-	})
 	//route to generate sample user
 	apiRouter.route('/users')
 		.post(function(req, res) {
@@ -84,7 +75,7 @@ apiRouter.route('/books/:book_title')
 					}, superSecret, {
 						expiresInMinutes: 1400 // expires in 24 hours
 					});
-					
+
 					var lietotajs = user._id;
 					console.log(lietotajs);
 
@@ -101,66 +92,6 @@ apiRouter.route('/books/:book_title')
 
 		});
 	});
-	
-	
-	
-	
-//	apiRouter.post('/authenticate', function(req, res) {
-//
-//		// find the user
-//		User.findOne({
-//			username: req.body.username
-//		}).select('name username password').exec(function(err, user) {
-//
-//			if (err) throw err;
-//
-//			// no user with that username was found
-//			if (!user) {
-//				res.json({ 
-//					success: false, 
-//					message: 'Authentication failed. User not found.' 
-//				});
-//			} else if (user) {
-//
-//				// check if password matches
-//				var validPassword = user.comparePassword(req.body.password);
-//				if (!validPassword) {
-//					res.json({ 
-//						success: false, 
-//						message: 'Authentication failed. Wrong password.' 
-//					});
-//				} else {
-//
-//					// if user is found and password is right
-//					// create a token
-//					var token = jwt.sign({
-//						id: user._id, //saglabā esošo user id
-//						name: user.name,
-//						username: user.username
-//					}, superSecret, {
-//						expiresInMinutes: 1400 // expires in 24 hours
-//					});
-//
-//					// return the information including token as JSON
-//					res.json({
-//						success: true,
-//						message: 'Enjoy your token!',
-//						token: token,
-//						id: user._id
-//					});
-//				}   
-//
-//			}
-//
-//		});
-//	});
-	
-	
-	
-	
-	
-	
-	
 
 	// route middleware to verify a token
 	apiRouter.use(function(req, res, next) {
@@ -314,7 +245,7 @@ apiRouter.route('/books/:book_title')
 		book.title = req.body.title;  // set the users username (comes from the request)
 		book.author = req.body.author;  // set the users password (comes from the request)
 		book.user = req.body.user_id;
-		
+
 		book.save(function(err) {
 			if (err) {
 				// duplicate entry
@@ -387,8 +318,8 @@ apiRouter.route('/books/:book_title')
 			res.json({ message: 'Successfully deleted' });
 		});
 	});
-	
-	
+
+
 	// on routes that end in /books/:user_id
 	// ----------------------------------------------------
 	apiRouter.route('/mybooks/:user_id')
@@ -402,7 +333,19 @@ apiRouter.route('/books/:book_title')
 			// return the users
 			res.json(books);
 		});
-		
+
+	});
+
+	apiRouter.route('/books/bookinfo/:book_id')
+
+		.get(function(req, res) {
+
+		Book.findById(req.params.book_id, function(err, books) {
+			if (err) res.send(err);
+
+			res.json(books);
+		});
+
 	});
 
 	// api endpoint to get user information
