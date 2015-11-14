@@ -126,6 +126,39 @@ angular.module('bookCtrl', ['bookService'])
 			});
 	};
 
+})
+
+.controller('bookSingleController', function($routeParams, Book) {
+
+	var vm = this;
+
+	// variable to hide/show elements of the view
+	// differentiates between create or edit pages
+	vm.type = 'getsinglebook';
+
+	// get the book data for the book you want to edit
+	// $routeParams is the way we grab data from the URL
+	Book.getsinglebook($routeParams.book_title)
+		.success(function(data) {
+			vm.bookData = data;
+		});
+
+//	// function to save the book
+//	vm.saveBook = function(id) {
+//		vm.processing = true;
+//		vm.message = '';
+//
+//		// call the bookService function to update 
+//		Book.update($routeParams.book_id, vm.bookData)
+//			.success(function(data) {
+//				vm.processing = false;
+//
+//				// clear the form
+//				vm.bookData = {};
+//
+//				// bind the message from our API to vm.message
+//				vm.message = data.message;
+//			});
+//	};
+
 });
-
-

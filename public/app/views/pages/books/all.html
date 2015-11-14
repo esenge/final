@@ -27,7 +27,7 @@
 	<tbody>
 		<tr ng-repeat="book in book.books">
 			<td>{{ book._id }}</td>
-			<td>{{ book.title }}</td>
+			<td><a ng-href="/books/{{ book.title }}" ng-click="book.getsinglebook(book.title)">{{ book.title }}</a></td>
 			<td>{{ book.author }}</td>
 			<td class="col-sm-2">
 				<a ng-href="/books/{{ book._id }}" class="btn btn-danger">Edit</a>
