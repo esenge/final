@@ -50,4 +50,4 @@ app.get('*', function(req, res) {
 
 // START THE SERVER
 // ====================================
-app.listen(process.env.PORT, process.env.IP);
+app.listen(8080,'localhost');
