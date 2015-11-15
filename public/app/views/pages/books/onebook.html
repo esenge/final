@@ -1,16 +1,16 @@
 <h3>{{book.bookData.title}}</h3>
 <h4>{{book.bookData.author}}</h4>
 
-<div class="jumbotron" ng-controller="commentController as main">
+<div ng-controller="commentController as main">
 
 	<!-- display the list using ng-repeat -->
-	<h4>Comments: </h4>
+	<h5>Comments: </h5>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<td><span class="glyphicon glyphicon-comment"></span> Username</td>
-				<td>Comment</td>
-				<td>Date and time</td>
+				<td><span class="glyphicon glyphicon-user"></span> Username</td>
+				<td><span class="glyphicon glyphicon-comment"></span> Comment</td>
+				<td><span class="glyphicon glyphicon-time"></span> Date and time</td>
 			</tr>
 		</thead>
 		<tbody>
