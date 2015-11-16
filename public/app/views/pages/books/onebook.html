@@ -1,40 +1,39 @@
 <h3>{{book.bookData.title}}</h3>
-<h4>{{book.bookData.author}}</h4>
+<h4>{{book.bookData.author.name}}</h4>
 
-<div ng-controller="commentController as main">
-
-	<!-- display the list using ng-repeat -->
-	<h5>Comments: </h5>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<td><span class="glyphicon glyphicon-user"></span> Username</td>
-				<td><span class="glyphicon glyphicon-comment"></span> Comment</td>
-				<td><span class="glyphicon glyphicon-time"></span> Date and time</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="computer in main.computers">
-				<td>{{ computer.name }}</td>
-				<td>{{ computer.color }}</td>
-				<td>{{ computer.nerdness }}</td>
-			</tr>
-		</tbody>
-	</table>
+<div>
+	<section class="comment-list">
+		<article class="row" ng-repeat="bookComments in book.bookData.comments">
+			<div class="col-md-10 col-sm-10">
+				<div class="panel panel-default arrow left">
+					<div class="panel-body">
+						<header class="text-left">
+							<div class="comment-user"><i class="fa fa-user"></i> <a ng-href="/users/usersinfo/{{ bookComments.commentAuthor._id }}"><strong> {{ bookComments.commentAuthor.username}} </strong></a></div>
+							<time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> <em> {{ bookComments.dateCreated | date:'EEEE, MMMM, d, y, h:mm a'}} </em></time>
+						</header>
+						<div class="comment-post">
+							<p>
+								{{ bookComments.comment }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article>
+	</section>
+	
+	<div class="jumbotron text-center" ng-show="book.processing">
+	<span class="glyphicon glyphicon-repeat spinner"></span>
+	<p>Loading Comment...</p>
+	</div>
 
 	<!-- form to add computer to the list -->
-	<form class="form-horizontal" style="height:100px" ng-submit="main.addComputer()">
-
-		<input type="text" class="form-control" placeholder="Username" ng-model="main.computerData.name">
-		<textarea class="form-control" placeholder="Comment" ng-model="main.computerData.color"></textarea>
-		<input type="datetime" class="form-control" ng-model="main.computerData.nerdness">
-
+	<form class="form-horizontal" style="height:100px" ng-submit="book.saveComment()">
+		<!--do some fix here with ng models-->
+		<textarea class="form-control" placeholder="Comment" ng-model="book.commentData.comment"></textarea>
 		<button type="submit" class="btn btn-success">Add</button>
 	</form>
 	<div>
 		{{date | date:'EEEE, MMMM, d, y, h:mm a'}}
 	</div>
 </div>
-
-
-

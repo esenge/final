@@ -38,6 +38,12 @@ angular.module('app.routes', ['ngRoute'])
 		controllerAs: 'user'
 	})
 	
+	.when('/users/usersinfo/:user_id', {
+		templateUrl: 'app/views/pages/users/oneuser.html',
+		controller: 'userBookController',
+		controllerAs: 'user'
+	})
+	
 	/*=============BOOOKS=====================================*/
 	
 	// show books
@@ -62,6 +68,7 @@ angular.module('app.routes', ['ngRoute'])
 		controllerAs: 'book'
 	})
 	
+	
 	// == MY BOOKS ==//
 	.when('/mybooks', {
 		templateUrl: 'app/views/pages/mybooks/all.html',
@@ -73,8 +80,13 @@ angular.module('app.routes', ['ngRoute'])
 		templateUrl: 'app/views/pages/books/onebook.html',
 		controller: 'bookSingleController',
 		controllerAs: 'book'
-
-	});
+	})
+	
+	.when('/books/bookauthors/:author_id', {
+		templateUrl: 'app/views/pages/author/oneauthor.html',
+		controller: 'bookSingleAuthorController',
+		controllerAs: 'book'
+	})
 	
 	$locationProvider.html5Mode(true);
 

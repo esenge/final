@@ -1,6 +1,6 @@
 angular.module('userCtrl', ['userService'])
 
-.controller('userController', function(User) {
+.controller('userController', function(User, Auth, $location) {
 
 	var vm = this;
 
@@ -10,12 +10,14 @@ angular.module('userCtrl', ['userService'])
 	// grab all the users at page load
 	User.all()
 		.success(function(data) {
-//console.log(data);
+			//console.log(data);
 			// when all the users come back, remove the processing variable
 			vm.processing = false;
 
 			// bind the users that come back to vm.users
 			vm.users = data;
+							console.log("DEBUG_THIS22222222!!!!!!!");
+		console.log(vm.users);
 		});
 
 	// function to delete a user
@@ -32,16 +34,23 @@ angular.module('userCtrl', ['userService'])
 					.success(function(data) {
 						vm.processing = false;
 						vm.users = data;
+						vm.doLogout();
 					});
-
 			});
+	};
+	
+		vm.doLogout = function() {
+		Auth.logout();
+		vm.user = '';
+		
+		$location.path('/login');
 	};
 
 })
 
 // controller applied to user creation page
-.controller('userCreateController', function(User) {
-	
+.controller('userCreateController', function(User, $location) {
+
 	var vm = this;
 
 	// variable to hide/show elements of the view
@@ -52,21 +61,25 @@ angular.module('userCtrl', ['userService'])
 	vm.saveUser = function() {
 		vm.processing = true;
 		vm.message = '';
-
+		
 		// use the create function in the userService
 		User.create(vm.userData)
 			.success(function(data) {
+
 				vm.processing = false;
 				vm.userData = {};
 				vm.message = data.message;
+
+					$location.path('/login');
+
 			});
-			
-	};	
+
+	};
 
 })
 
 // controller applied to user edit page
-.controller('userEditController', function($routeParams, User) {
+.controller('userEditController', function($routeParams, User, $location) {
 
 	var vm = this;
 
@@ -96,7 +109,31 @@ angular.module('userCtrl', ['userService'])
 
 				// bind the message from our API to vm.message
 				vm.message = data.message;
+					$location.path('/users');
 			});
 	};
+
+})
+
+.controller('userBookController', function($routeParams, $scope, User, Auth) {
+
+	var vm = this;
+	console.log("BLAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+console.log($routeParams);
+
+	console.log($routeParams.user_id);
+
+		
+		User.allUserBooks($routeParams.user_id)
+				.success(function(data) {
+
+					// when all the books come back, remove the processing variable
+					vm.processing = false;
+
+					// bind the books that come back to vm.books
+					vm.users = data;
+					console.log(data);
+				});
+
 
 });

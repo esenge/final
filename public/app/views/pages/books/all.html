@@ -6,7 +6,6 @@
 			New book
 		</a>
 	</h1>
-	<h4>Tagadējais: {{ main.user.username }}</h4>
 
 </div>
 
@@ -18,20 +17,18 @@
 <table class="table table-bordered table-striped" ng-show="book.books">
 	<thead>
 		<tr>
-			<th>_id</th>
 			<th>Title</th>
-			<th>Author (id)</th>
+			<th>Author</th>
 			<th class="col-sm-2"></th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="book in book.books">
-			<td>{{ book._id }}</td>
-			<td><a ng-href="/books/bookinfo/{{ book._id }}">{{ book.title }}</a></td>
-			<td>{{ book.author }}</td>
+		<tr ng-repeat="singleBook in book.books">
+			<td><a ng-href="/books/bookinfo/{{ singleBook._id }}">{{ singleBook.title }}</a></td>
+			<td><a ng-href="/books/bookauthors/{{ singleBook.author._id }}">{{ singleBook.author.name }}</a></td>
 			<td class="col-sm-2">
-				<a ng-href="/books/{{ book._id }}" class="btn btn-danger">Edit</a>
-				<a href="#" ng-click="book.deleteBook(book._id)" class="btn btn-primary">Delete</a>
+				<a ng-href="/books/{{ singleBook._id }}" class="btn btn-danger">Edit</a>
+				<a href="#" ng-click="book.deleteBook(singleBook._id)" class="btn btn-primary">Delete</a>
 			</td>
 		</tr>
 	</tbody>

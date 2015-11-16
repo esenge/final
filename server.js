@@ -9,6 +9,9 @@ var morgan     = require('morgan'); 		// used to see requests
 var mongoose   = require('mongoose');
 var config 	   = require('./config');
 var path 	   = require('path');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
+
+
 
 // APP CONFIGURATION ==================
 // ====================================
@@ -50,4 +53,4 @@ app.get('*', function(req, res) {
 
 // START THE SERVER
 // ====================================
-app.listen(8080,'localhost');
+app.listen(process.env.PORT, process.env.IP)

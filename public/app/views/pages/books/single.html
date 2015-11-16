@@ -2,7 +2,6 @@
 	<h1 ng-if="book.type == 'create'">Create book</h1>
 	<h1 ng-if="book.type == 'edit'">Edit book</h1>
 </div>
-<h4 >Tagadējais: {{ main.user.id }}</h4>
 <form class="form-horizontal" ng-submit="book.saveBook()">
 	
 	<div class="form-group">
@@ -15,7 +14,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Author</label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" ng-model="book.bookData.author">
+			<input type="text" class="form-control" ng-model="book.bookData.author.name">
 		</div>
 	</div>
 	

@@ -14,7 +14,7 @@ angular.module('bookService', [])
 	bookFactory.getSingleBook = function(id) {
 		return $http.get('/api/books/bookinfo/'+id);
 	};
-
+	
 
 	// get all books
 	bookFactory.all = function() {
@@ -25,11 +25,21 @@ angular.module('bookService', [])
 	bookFactory.allMy = function(id) {
 		return $http.get('/api/mybooks/'+id);
 	};
+	
+	bookFactory.allAuthorBooks = function(id) {
+		return $http.get('/api/books/bookauthors/'+id);
+	};
 
 	// create a book
 	bookFactory.create = function(bookData) {
 		return $http.post('/api/books/', bookData);
 	};
+	
+	// create a comment
+	bookFactory.addComment = function(commentData) {
+		return $http.post('/api/books/bookinfo/', commentData);
+	};
+
 
 	// update a book
 	bookFactory.update = function(id, bookData) {

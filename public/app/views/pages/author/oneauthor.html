@@ -1,0 +1,6 @@
+<h3>{{book.books[0].author.name}}</h3>
+<h4>Books: </h4>
+
+<div class="list-group" ng-repeat="authorBook in book.books">
+  <a ng-href="/books/bookinfo/{{ authorBook._id }}" class="list-group-item">{{ authorBook.title }}</a>
+</div>

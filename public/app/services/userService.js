@@ -14,6 +14,10 @@ angular.module('userService', [])
 	userFactory.all = function() {
 		return $http.get('/api/users/');
 	};
+	
+	userFactory.allUserBooks = function(id) {
+		return $http.get('/api//users/usersinfo/'+id);
+	};
 
 	// create a user
 	userFactory.create = function(userData) {
